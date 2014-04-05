@@ -92,7 +92,7 @@
 				$('#comecar').on('click', function(event){
 					
 					// Mostrando os outros botões
-					$('.desativado').removeClass('desativado');
+					$('.desativado').toggleClass('desativado');
 
 					// Tirando esse botão
 					// $(this).addClass('desativado');
@@ -101,10 +101,7 @@
 					// Ativando as estatísticas
 					$('.resultado').show();
 
-					// $('.title').hide(400);
-
 					// Mudando o texto
-					// $('.instrucao').text("A cada novo chute que você solicitar, aumente 1 no número escolhido mentalmente no passo anterior.")
 					comecarChutes();
 
 				});
@@ -114,17 +111,25 @@
 				});
 
 				$('#voce-acertou').on('click', function(event){
-					alert("O número da sua imaginação era " + cartaSelecionada + " e eu precisei de " + numeroDeChutes + " para descobrir!");
-					resetar();
+					var recomecar = confirm("O número da sua imaginação era " + chute + " e eu precisei de " + numeroDeChutes + " jogadas para descobrir!\nQuer tentar de novo, dessa vez direito?");
+					if(recomecar){
+						resetar();
+					}
 				});
 
 				function comecarChutes(){
 
 					if(numeroDeChutes < 20){
-						if(numeroDeChutes < 7){
+						if(numeroDeChutes < 8){
 							
+							// Guardando o chute anterior
+							var chuteAnterior = chute;
+
 							// Chutando novo número
-							chute = Math.floor((Math.random()*12)+1);
+							do{
+								chute = Math.floor((Math.random()*12)+1);
+							}while(chuteAnterior == chute)
+							
 							chutarUmNumero(chute);
 
 						}else{
@@ -143,6 +148,11 @@
 						// Colocando o valor na interface
 						$('#numeroChutes').text(numeroDeChutes);
 
+					}else{
+						var recomecar = confirm("Chegamos a 20, eu já deveria ter acertado. Você está mentindo para mim?\nDeseja reiniciar o jogo?")
+						if(recomecar){
+							resetar();
+						}
 					}
 				}
 
@@ -166,10 +176,11 @@
 				}
 
 				function resetar(){
-					$('.botao').addClass('desativado');
-					$('#comecar').removeClass('desativado');	
+					// $('.botao').addClass('desativado');
+					$('#voce-acertou, #proximo-chute').toggleClass('desativado');
+					$('#comecar').show(400);
+					$('.card').removeClass('hover');	
 					numeroDeChutes = 0;
-					$('#chute').text(0);
 					$('#numeroChutes').text(0);
 				}
 			});

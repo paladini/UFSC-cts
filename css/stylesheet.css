@@ -106,6 +106,8 @@ main{
 }
 
 .desativado{
-	background-color: #4c4c4c !important;
-	visibility: hidden;
+	/*background-color: #4c4c4c !important;*/
+	/*visibility: hidden;*/
+	display: none;
+	position: relative;
 }
