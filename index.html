@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>[Trabalho CTS 01] Jogo do relógio / cartas</title>
+		<link rel="stylesheet" type="text/css" href="css/stylesheet.css" >
+	</head>
+
+	<body>
+		<h1 class="title">Jogo do relógio / cartas</h1>
+
+		<main>
+			<strong>Instrução:</strong> <span class="instrucao">memorize um número entre 1 e 12. Vou tentar chutar e acertar o seu número, após cada chute adicione 1 ao seu número memorizado. Tenho 20 chutes possíveis. Para começar clique em "Começar o Jogo".</span><br/>
+
+			<div class="all-cards">
+				<div class="card" id="card1">
+					1
+				</div>
+				<div class="card" id="card2">
+					2
+				</div>
+				<div class="card" id="card3">
+					3
+				</div>
+				<div class="card" id="card4">
+					4
+				</div>
+				<div class="card" id="card5">
+					5
+				</div>
+				<div class="card" id="card6">
+					6
+				</div><br/>
+				<div class="card" id="card7">
+					7
+				</div>
+				<div class="card" id="card8">
+					8
+				</div>
+				<div class="card" id="card9">
+					9
+				</div>
+				<div class="card" id="card10">
+					10
+				</div>
+				<div class="card" id="card11">
+					11
+				</div>
+				<div class="card" id="card12">
+					12
+				</div>
+			</div>
+
+			<div id="botoes">
+				<div class="botao desativado" id="proximo-chute">
+					Próximo chute
+				</div>
+				<div class="botao" id="comecar">
+					Começar o jogo!
+				</div>
+				<div class="botao desativado" id="voce-acertou">
+					Você acertou!
+				</div>
+			</div>
+
+			<br/>
+			<div class="resultado">
+				Número de chutes: <span id="numeroChutes">0</span>
+				&emsp; Chute atual: <span id="chute"></span>
+			</div>
+
+		</main>
+
+		<!-- Scripts -->
+		<script src="js/jquery-2.1.0.min.js"></script>
+		<script>
+			
+			var chute = 0;
+			var numeroDeChutes = 0;
+			var comecaEm12 = 12;
+			var atual = null;
+
+			$(document).ready(function(){
+
+				$('.botao').hover(function(){
+					$(this).addClass('hover');
+				}, function(){
+					$(this).removeClass('hover');
+				})
+
+				$('#comecar').on('click', function(event){
+					
+					// Mostrando os outros botões
+					$('.desativado').removeClass('desativado');
+
+					// Tirando esse botão
+					// $(this).addClass('desativado');
+					$(this).hide();
+
+					// Ativando as estatísticas
+					$('.resultado').show();
+
+					comecarChutes();
+
+				});
+
+				$('#proximo-chute').on('click', function(event){
+					comecarChutes();
+				});
+
+				$('#voce-acertou').on('click', function(event){
+					alert("O número da sua imaginação era " + cartaSelecionada + " e eu precisei de " + numeroDeChutes + " para descobrir!");
+					resetar();
+				});
+
+				function comecarChutes(){
+
+					if(numeroDeChutes < 20){
+						if(numeroDeChutes < 7){
+							
+							// Removendo chute anterior
+							// $(atual).removeClass('hover');
+							
+							// Chutando novo número
+							chute = Math.floor((Math.random()*12)+1);
+							chutarUmNumero(chute);
+
+						}else{
+							if(comecaEm12 > 0){
+								
+								// Imprimindo ao usuário
+								chutarUmNumero(comecaEm12);
+								
+								// Diminuindo da contagem
+								comecaEm12 = comecaEm12 - 1;
+							}
+						}
+
+						numeroDeChutes = numeroDeChutes + 1;
+
+						// Colocando o valor na interface
+						$('#numeroChutes').text(numeroDeChutes);
+					}
+				}
+
+				function chutarUmNumero(chute){
+
+					// Removendo chute anterior
+					$(atual).removeClass('hover');
+
+					
+					setTimeout(function(){
+
+						// Menos 1 porque o vetor começa em 0.
+						atual = $('.card').get(chute-1);
+
+
+						// Colocando o valor do chute na interface
+						$('#chute').text(chute);
+
+						// Simulando chute visualmente
+						$(atual).addClass('hover');
+
+					}, 100);
+				}
+
+				function resetar(){
+					$('.botao').addClass('desativado');
+					$('#comecar').removeClass('desativado');	
+					numeroDeChutes = 0;
+					$('#chute').text(0);
+					$('#numeroChutes').text(0);
+				}
+			});
+
+
+		</script>
+	</body>
+</html>
